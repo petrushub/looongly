@@ -7,5 +7,9 @@ route = ""
 zone_id = "f0b0d63ae55d5e495047f4b5ab5b8996"
 compatibility_date = "2022-01-22"
 kv_namespaces = [ 
-    { binding = "LONG_DEV", id = "fa125ef780ed47fea9fe2aeae5093e2c", preview_id = "fa125ef780ed47fea9fe2aeae5093e2c" }
-]   
+    { binding = "LONG", id = "d35dee803a9a46a2ad5b2c6fb31d0565", preview_id = "fa125ef780ed47fea9fe2aeae5093e2c" }
+]
+
+[site]
+bucket = "./public"
+entry-point = "workers-site"

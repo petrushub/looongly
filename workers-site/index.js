@@ -1,10 +1,12 @@
 import { Router } from 'itty-router';
 import { customAlphabet } from 'nanoid';
+import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
+
 
 const router = Router();
 const nanoid = customAlphabet(
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-  50,
+  200,
 );
 
 router.post('/links', async request => {
@@ -12,7 +14,7 @@ router.post('/links', async request => {
   let requestBody = await request.json();
   if ('url' in requestBody) {
     // Add slug to our KV store so it can be retrieved later:
-    await LONG_DEV.put(slug, requestBody.url, { expirationTtl: 86400 });
+    await LONG.put(slug, requestBody.url, { expirationTtl: 86400 });
     let shortenedURL = `${new URL(request.url).origin}/${slug}`;
     let responseBody = {
       message: 'Link elongated successfully. Enjoy :P',
@@ -29,7 +31,7 @@ router.post('/links', async request => {
 });
 
 router.get('/:slug', async request => {
-  let link = await LONG_DEV.get(request.params.slug);
+  let link = await LONG.get(request.params.slug);
 
   if (link) {
     return new Response(null, {
@@ -44,9 +46,20 @@ router.get('/:slug', async request => {
 });
 
 
+async function handleEvent(event) {
+  let requestUrl = new URL(event.request.url);
+  if (requestUrl.pathname === '/' || requestUrl.pathname.includes('static')) {
+    return await getAssetFromKV(event);
+  } else {
+    return await router.handle(event.request);
+  }
+}
+
+
 addEventListener('fetch', event => {
-  event.respondWith(router.handle(event.request))
-})
+  event.respondWith(handleEvent(event));
+});
+
 /**
  * Respond with hello worker text
  * @param {Request} request
