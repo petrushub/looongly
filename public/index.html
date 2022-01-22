@@ -9,9 +9,9 @@
     <div id="app">
       <div class="container">
         <img src="https://loooongly.festucs.workers.dev/static/kittie.gif" width="160">
-        <h1>Shorten a URL</h1>
+        <h1>Enloooong a URL</h1>
         <p>
-          Fill in the URL you want to shorten below. Links expire in 24 hours.
+          Fill in the URL you want to enlong below. Links expire in 24 hours.
         </p>
 
         <form @submit.prevent="handleUrlSubmit">
@@ -24,17 +24,17 @@
             required
             v-model="longUrl"
           />
-          <input type="submit" id="input-submit" value="Shorten" />
+          <input type="submit" id="input-submit" value="Enloooong" />
         </form>
 
         <div class="message" v-if="shortUrl">
-          <p>Your new shortened URL is:</p>
+          <p>Your new enloooonged URL is:</p>
           <h2>{{ shortUrl }}</h2>
         </div>
 
         <div class="message error" v-if="error">
           <p>
-            Error shortening your link. Please ensure it's a valid URL and
+            Error enlooongering your link. Please ensure it's a valid URL and
             starts with http:// or https://
           </p>
         </div>
